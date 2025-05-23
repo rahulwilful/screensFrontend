@@ -2,6 +2,8 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import axiosClient from "./axiosClient";
+import showToast from "./components/notification/ShowtToast";
 
 function App() {
   const [image, setImage] = useState(null);
@@ -22,22 +24,14 @@ function App() {
     formData.append("image", image);
 
     try {
-      const response = await fetch("http://localhost:5000/video/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await axiosClient.post(`video/upload`, formData);
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Upload successful:", result);
-        alert("File uploaded successfully!");
-      } else {
-        console.error("Upload failed:", response.statusText);
-        alert("File upload failed!");
+      if (response) {
+        showToast("Video Uploaded", "success");
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      alert("Error uploading file!");
+      showToast("Video Upload Faild", "error");
     }
   };
 
