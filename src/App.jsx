@@ -21,17 +21,40 @@ function App() {
     }
 
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("media", image);
+    formData.append("client_id", "680932cc5670e44859d81c68");
+    formData.append("location_id", "6830114362e775e471a0bd7d");
+    formData.append("start_date", "2025-10-05");
+    formData.append("end_date", "2025-10-07");
+
+    /* let formData = {
+      media: image,
+      client_id: "680932cc5670e44859d81c68",
+      location_id: "6830114362e775e471a0bd7d",
+      start_date: "2025-10-05",
+      end_date: "2025-10-07",
+    }; */
+
+    // Log the FormData entries
+    /*   for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    } */
 
     try {
-      const response = await axiosClient.post(`video/upload`, formData);
+      console.log("formData: ", formData);
+      const response = await axiosClient.post(`video/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the content type to multipart/form-data
+        },
+      });
 
       if (response) {
         showToast("Video Uploaded", "success");
+        console.log("response: ", response);
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      showToast("Video Upload Faild", "error");
+      showToast("Video Upload Failed", "error");
     }
   };
 
